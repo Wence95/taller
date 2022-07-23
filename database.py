@@ -7,7 +7,7 @@ class BaseDatos:
             host='localhost',
             user='root',
             password='',
-            db='bdpy'
+            db='biblioteca'
         )
         self.cursor = self.conexion.cursor()
         print("Conexion bd correcta")
@@ -131,4 +131,5 @@ class BaseDatos:
             raise
 
     def cerrar(self):
+        print("bd se cerró correctamente")
         self.conexion.close()

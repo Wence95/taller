@@ -1,8 +1,11 @@
 from tkinter import *
 from tkinter.ttk import *
 import tkinter as tk
+import database as db
 
 #import pymysql
+
+bd = db.BaseDatos()
 
 index=Tk()
 index.title("LOGIN")
@@ -63,6 +66,8 @@ b1=Button(index, text="Entrar", command=ingresar)
 b1.pack()
 
 index.mainloop()
+
+bd.cerrar()
 
 
 if __name__=="__init__":
