@@ -1,13 +1,8 @@
-from tkinter import *
-from tkinter.ttk import *
 import tkinter as tk
 import database as db
 
-#import pymysql
 
-bd = db.BaseDatos()
-
-index=Tk()
+""" index=Tk()
 index.title("LOGIN")
 index.geometry("300x150")
 index.resizable(width=False, height=False)
@@ -65,9 +60,12 @@ def ingresar():
 b1=Button(index, text="Entrar", command=ingresar)
 b1.pack()
 
-index.mainloop()
+index.mainloop() """
 
-bd.cerrar()
+def main():
+    bd = db.BaseDatos()
+
+    bd.cerrar()
 
 
 if __name__=="__init__":
