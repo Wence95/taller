@@ -69,13 +69,44 @@ def main():
     msg = tk.Frame(ventana)
     state = State()
 
-    print("asd")
+    def clearWindow():
+        for widgets in ventana.winfo_children():
+            widgets.destroy()
 
     def loggedInWindow():
-        #clearWindow()
+        clearWindow()
         saludo = tk.Label(ventana)
         saludo["text"] = "Hola, " + state.username
-        saludo.pack()
+        saludo.pack()   
+
+        if state.profile == 'Administrador':
+            botonNewLibro = tk.Button(ventana, text="Nuevo libro", command=lambda: registrar('libro'))
+            botonNewLibro.pack()
+            botonNewUsuario = tk.Button(ventana, text="Nuevo usuario", command=lambda: registrar('usuario'))
+            botonNewUsuario.pack()
+            botonNewCliente = tk.Button(ventana, text="Nuevo cliente", command=lambda: registrar('cliente'))
+            botonNewCliente.pack()
+
+
+        if state.profile == 'Usuario':
+            botonListadoUsers = tk.Button(frame, text="Ver usuarios", command=lambda: mostrarLista('usuario'))
+            botonListadoUsers.pack()
+
+            botonEventList = tk.Button(frame, text="Ver lista de eventos", command=lambda: mostrarLista('evento'))
+            botonEventList.pack()
+
+            botonItemList = tk.Button(frame, text="Ver lista de productos", command=lambda: mostrarLista('producto'))
+            botonItemList.pack()
+
+            botonClientList = tk.Button(frame, text="Ver lista de clientes",
+                                        command=lambda: mostrarLista('cliente'))
+            botonClientList.pack()
+
+        boton = tk.Button(ventana, text="Cerrar sesión", command=logOut)
+        boton.pack()
+
+    def registrar(el):
+        pass
 
     def getUser(rut):
         # Evitar repetición de mensaje "Usuario o contraseña inválidos"
@@ -83,11 +114,12 @@ def main():
             widgets.destroy()
         msg.pack()
         
-        user = bd.seleccionarBD(('rut', 'nombre'), 'bibliotecario', "rut='"+rut+"'")
+        user = bd.seleccionarBD(('rut', 'nombre', 'perfil'), 'bibliotecario', "rut='"+rut+"'")
         if user is not None:
             print("!!")
             state.username = user[1]
             state.estado = True
+            state.profile = user[2]
             loggedInWindow()
         else:
             etiqueta = tk.Label(msg)
