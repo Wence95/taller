@@ -1,6 +1,7 @@
 import tkinter as tk
-import database as db
 
+from database import *
+from classes import *
 
 """ index=Tk()
 index.title("LOGIN")
@@ -63,10 +64,54 @@ b1.pack()
 index.mainloop() """
 
 def main():
-    bd = db.BaseDatos()
+    bd = BaseDatos()
+    ventana = tk.Tk()
+    msg = tk.Frame(ventana)
+    state = State()
 
+    print("asd")
+
+    def loggedInWindow():
+        #clearWindow()
+        saludo = tk.Label(ventana)
+        saludo["text"] = "Hola, " + state.username
+        saludo.pack()
+
+    def getUser(rut):
+        # Evitar repetición de mensaje "Usuario o contraseña inválidos"
+        for widgets in msg.winfo_children():
+            widgets.destroy()
+        msg.pack()
+        
+        user = bd.seleccionarBD(('rut', 'nombre'), 'bibliotecario', "rut='"+rut+"'")
+        if user is not None:
+            print("!!")
+            state.username = user[1]
+            state.estado = True
+            loggedInWindow()
+        else:
+            etiqueta = tk.Label(msg)
+            etiqueta.pack()
+            etiqueta["text"] = "Usuario o contraseña inválidos"
+
+    def setIndex():
+        ventana.geometry("400x400")
+        user_msg = tk.Label(ventana)
+        user_msg["text"] = "Ingrese su rut"
+        user_msg.pack()
+
+        caja_user = tk.Entry(ventana)
+        caja_user.pack()
+
+        boton = tk.Button(ventana, text="Ingresar", command=lambda: getUser(caja_user.get()))
+        boton.pack()
+
+
+    setIndex()
+
+    ventana.mainloop()
     bd.cerrar()
 
 
-if __name__=="__init__":
+if __name__ == '__main__':
     main()
