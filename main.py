@@ -1,5 +1,4 @@
 import tkinter as tk
-from tkinter.ttk import Frame
 
 from database import *
 from classes import *
@@ -68,11 +67,14 @@ def main():
     bd = BaseDatos()
     ventana = tk.Tk()
     frame = tk.Frame(ventana)
+    auxFrame = tk.Frame(ventana)
     msg = tk.Frame(ventana)
     state = State()
 
     def clearWindow():
         for widgets in frame.winfo_children():
+            widgets.destroy()
+        for widgets in auxFrame.winfo_children():
             widgets.destroy()
 
     def logOut():
@@ -90,26 +92,35 @@ def main():
         bd.ingresar('bibliotecario', ('rut', 'nombre', 'direccion', 'telefono', 'email', 'perfil'), (rut, name, address, phone, email, perfil))
         loggedInWindow()
 
+    def eliminarElemento():
+        pass
+
+    def editarElemento():
+        pass
+
     def mostrarLista(tabla):
         clearWindow()
         i = 0
+        ventana.geometry("700x400")
         if tabla == 'bibliotecario':
-            tk.Label(frame, text = "id").grid(row=0, column=0)
-            tk.Label(frame, text="Usuario").grid(row=0, column=1)
-            tk.Label(frame, text="Nombre").grid(row=0, column=2)
-            tk.Label(frame, text="Perfil").grid(row=0, column=3)
+            tk.Label(frame, text = "RUT").grid(row=0, column=0)
+            tk.Label(frame, text="Nombre").grid(row=0, column=1)
+            tk.Label(frame, text="Dirección").grid(row=0, column=2)
+            tk.Label(frame, text="Teléfono").grid(row=0, column=3)
+            tk.Label(frame, text = "email").grid(row=0, column=4)
+            tk.Label(frame, text="Perfil").grid(row=0, column=5)
         elif tabla == 'libro':
-            tk.Label(frame, text = "id").grid(row=0, column=0)
-            tk.Label(frame, text="Evento").grid(row=0, column=1)
-            tk.Label(frame, text="Asistencia").grid(row=0, column=2)
-            tk.Label(frame, text="Fecha").grid(row=0, column=3)
-            tk.Label(frame, text="Hora").grid(row=0, column=4)
+            tk.Label(frame, text = "Titulo").grid(row=0, column=0)
+            tk.Label(frame, text="Autor").grid(row=0, column=1)
+            tk.Label(frame, text="Editorial").grid(row=0, column=2)
+            tk.Label(frame, text="Año").grid(row=0, column=3)
+            tk.Label(frame, text="ID").grid(row=0, column=4)
         elif tabla == 'ejemplar':
             tk.Label(frame, text = "id").grid(row=0, column=0)
             tk.Label(frame, text="Tipo").grid(row=0, column=1)
             tk.Label(frame, text="Valor").grid(row=0, column=2)
             tk.Label(frame, text="Stock").grid(row=0, column=3)
-        elif tabla == 'usuario':
+        elif tabla == 'prestamo':
             tk.Label(frame, text="RUT").grid(row=0, column=0)
             tk.Label(frame, text="Nombre").grid(row=0, column=1)
             tk.Label(frame, text="Empresa").grid(row=0, column=2)
@@ -127,7 +138,7 @@ def main():
                 tk.Label(frame, text=word).grid(row=i, column=j, padx=10, sticky=tk.W)
             if state.profile == 'Administrador':
                 if tabla == 'bibliotecario':
-                    if elemento[3] != "Administrador":
+                    if elemento[5] != "Administrador":
                         # noinspection PyShadowingNames
                         tk.Button(frame, text="Eliminar",
                                   command=lambda elemento=elemento:
@@ -145,22 +156,9 @@ def main():
                     tk.Button(frame, text="Editar",
                               command=lambda elemento=elemento: editarElemento(elemento[0], tabla)).grid(row=i,
                                                                                                       column=j + 2)
-            if tabla == 'producto':
-                tk.Button(frame, text="Detalle stock", command=lambda elemento=elemento:
-                          graficarProducto(elemento[0])).grid(row=i, column=j+3)
-
-            if tabla == 'evento':
-                if not (getProfile(state.username) == "Gestor"):
-                    # noinspection PyShadowingNames
-                    tk.Button(frame, text="Agregar producto",
-                              command=lambda elemento=elemento: producto_evento(elemento[0],
-                                                                                tabla)).grid(row=i, column=j + 3)
-                # noinspection PyShadowingNames
-                tk.Button(frame, text="Detalle",
-                          command=lambda elemento=elemento: detalleEvento(elemento[0])).grid(row=i, column=j + 4)
 
         boton2 = tk.Button(auxFrame, text="Volver", command=loggedInWindow)
-        boton2.pack(side=tk.BOTTOM)
+        boton2.pack()
 
     def registrar(el):
         clearWindow()
@@ -286,6 +284,7 @@ def main():
 
     
     frame.pack()
+    auxFrame.pack()
 
     setIndex()
 
