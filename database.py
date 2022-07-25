@@ -106,14 +106,8 @@ class BaseDatos:
             else:
                 setString = setString + columns[i] + "=" + str(values[i])
             i += 1
-        if tabla == 'producto':
-            sql = "update {} set {} where id_producto={}".format(tabla, setString, id)
-        elif tabla == 'evento':
-            sql = "update {} set {} where id_evento={}".format(tabla, setString, id)
-        elif tabla == 'usuario':
+        if tabla == 'prestamo':
             sql = "update {} set {} where id={}".format(tabla, setString, id)
-        else:
-            sql = "update {} set {} where rut='{}'".format(tabla, setString, id)
         print(sql)
         try:
             self.cursor.execute(sql)
